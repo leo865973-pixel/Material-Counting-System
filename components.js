@@ -3,7 +3,7 @@ const { useState, useEffect, useRef } = React;
 // ============================================================================
 // Icon Component
 // ============================================================================
-const Icon = ({ name, className = '' }) => {
+window.Icon = ({ name, className = '' }) => {
   const ref = useRef(null);
   useEffect(() => {
     if (ref.current && window.lucide && window.lucide.icons[name]) {
@@ -20,13 +20,13 @@ const Icon = ({ name, className = '' }) => {
 // ============================================================================
 // UI Components
 // ============================================================================
-const Badge = ({ children, className = '' }) => (
+window.Badge = ({ children, className = '' }) => (
   <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase border ${className}`}>
     {children}
   </span>
 );
 
-const Button = ({ children, variant = 'primary', size = 'default', className = '', disabled, isLoading, ...props }) => {
+window.Button = ({ children, variant = 'primary', size = 'default', className = '', disabled, isLoading, ...props }) => {
   const baseStyle = "inline-flex items-center justify-center rounded-full font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0066cc]/50 disabled:pointer-events-none disabled:opacity-50 cursor-pointer relative active:scale-[0.97]";
   const variants = {
     primary: "bg-[#1d1d1f] text-white hover:bg-[#424245] shadow-[0_4px_14px_rgba(0,0,0,0.1)]",
@@ -43,33 +43,33 @@ const Button = ({ children, variant = 'primary', size = 'default', className = '
   };
   return (
     <button disabled={disabled || isLoading} className={`${baseStyle} ${variants[variant]} ${sizes[size]} ${className}`} {...props}>
-      {isLoading ? <Icon name="Loader2" className="w-4 h-4 mr-2 animate-spin" /> : null}
+      {isLoading ? <window.Icon name="Loader2" className="w-4 h-4 mr-2 animate-spin" /> : null}
       {children}
     </button>
   );
 };
 
-const Input = ({ className = '', ...props }) => (
+window.Input = ({ className = '', ...props }) => (
   <input 
     className={`flex h-11 w-full rounded-xl border border-[#d2d2d7] bg-white/50 px-4 py-2 text-sm text-[#1d1d1f] shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0066cc]/10 focus-visible:border-[#0066cc] disabled:cursor-not-allowed disabled:opacity-50 backdrop-blur-md placeholder:text-[#86868b] ${className}`}
     {...props}
   />
 );
 
-const Card = ({ children, className = '' }) => (
+window.Card = ({ children, className = '' }) => (
   <div className={`rounded-2xl sm:rounded-3xl border border-[#d2d2d7]/50 bg-white/80 backdrop-blur-2xl text-[#1d1d1f] shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col transition-all duration-300 ${className}`}>
     {children}
   </div>
 );
 
-const Modal = ({ isOpen, onClose, title, children, maxWidth = "max-w-md" }) => {
+window.Modal = ({ isOpen, onClose, title, children, maxWidth = "max-w-md" }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#1d1d1f]/20 backdrop-blur-sm p-4 transition-all duration-300">
       <div className={`bg-white/90 backdrop-blur-3xl border border-[#d2d2d7]/50 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-full ${maxWidth} flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200`}>
         <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[#d2d2d7]/30 shrink-0">
           <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[#1d1d1f]">{title}</h2>
-          <button onClick={onClose} className="text-[#86868b] hover:text-[#1d1d1f] transition-colors bg-[#f5f5f7] hover:bg-[#e5e5ea] p-2 rounded-full"><Icon name="X" className="w-5 h-5"/></button>
+          <button onClick={onClose} className="text-[#86868b] hover:text-[#1d1d1f] transition-colors bg-[#f5f5f7] hover:bg-[#e5e5ea] p-2 rounded-full"><window.Icon name="X" className="w-5 h-5"/></button>
         </div>
         <div className="p-5 sm:p-6 overflow-y-auto">
           {children}
@@ -83,11 +83,11 @@ const Modal = ({ isOpen, onClose, title, children, maxWidth = "max-w-md" }) => {
 // Notification Toast System
 // ============================================================================
 let toastListener = null;
-const showToast = (message, type = 'info') => {
+window.showToast = (message, type = 'info') => {
   if (toastListener) toastListener(message, type);
 };
 
-const ToastContainer = () => {
+window.ToastContainer = () => {
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const ToastContainer = () => {
     <div className="fixed top-4 right-4 left-4 sm:left-auto sm:top-6 sm:right-6 z-[100] flex flex-col gap-3 pointer-events-none">
       {toasts.map(t => (
         <div key={t.id} className={`flex items-center px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-white transform transition-all duration-300 animate-in slide-in-from-top-5 fade-in backdrop-blur-xl border border-white/10 ${t.type === 'success' ? 'bg-[#34c759]/90' : t.type === 'error' ? 'bg-[#ff3b30]/90' : 'bg-[#1d1d1f]/90'}`}>
-          <Icon name={t.type === 'success' ? 'CheckCircle2' : t.type === 'error' ? 'X' : 'Info'} className="w-5 h-5 mr-3 opacity-90 shrink-0" />
+          <window.Icon name={t.type === 'success' ? 'CheckCircle2' : t.type === 'error' ? 'X' : 'Info'} className="w-5 h-5 mr-3 opacity-90 shrink-0" />
           <span className="font-medium tracking-wide text-sm">{t.message}</span>
         </div>
       ))}
